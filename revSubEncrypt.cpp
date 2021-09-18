@@ -3,6 +3,7 @@
 #include <iterator>
 #include <stdlib.h>
 #include <algorithm>
+#include <cmath>
 
 //This program will take an input, reverse it, and apply a substitution cipher
 
@@ -22,21 +23,16 @@ void key(){
     cout << "key: ";
     cin >> key; 
     //construct cipher
-    for(int i = 0; i < alpha.size(); ++i){
-        //check if key + i is < 0 or > 26
-        if(key+i > alpha.size()){
-            if(key+i % alpha.size() == 1){
-                cipher += alpha[0];
-            }
-            else{
-                cipher += alpha[key+i % alpha.size()];
+    for(int i = 0; i < alpha.length(); ++i){
+        int val = key + i; 
+        if(val > alpha.length()-1){
+            cipher += alpha[val % alpha.length()];
         }
-            } 
-        else if(key+i < 0){
-            cipher += alpha[25 - abs(key+i)];
+        else if(val < 0){
+            cipher += alpha[alpha.length() + val];
         }
         else{
-            cipher += alpha[key+i];
+            cipher += alpha[val];
         }
     }
     cout << cipher;
