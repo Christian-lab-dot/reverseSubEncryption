@@ -6,7 +6,6 @@ using namespace std;
 
 const string vowels = "aeiouAEIOU"; 
 
-//calculate sqrt of char values in key (before appending vowels)
 int magicNum(string key)
 {
     int num = 0;
@@ -17,9 +16,9 @@ int magicNum(string key)
     return sqrt(num); 
 }
 
-bool isInKey(char c, string key)
+bool isVowel(char c)
 {
-    for (char k : key)
+    for (char k : vowels)
     {
         if (c == k)
         {
@@ -29,24 +28,37 @@ bool isInKey(char c, string key)
     return false;
 }
 
+int whereToMod(int i, int val)
+{
+    int sum = i + val;
+    int r = sum;
+    if (sum > 126)
+    {
+        r = 33 + (126-sum);
+    }
+    if (sum < 33)
+    {
+        r = 126 -  (sum - 33);
+    }
+    return r;
+}
+
 string encrypt(string s, string key)
 {
     string eMsg = "";
     int val = magicNum(key); 
-    key.append(vowels);
     for (char c : s)
     {
-        int distUpperLim = 126 - (int)(c);
-        int distLowerLim = (int)(c) - 33;
-        if (isInKey(c, key))
+        int whereTo = whereToMod((int)c, val);
+        if (!isVowel(c) && !(isVowel((char)(whereTo))))
         {
             if ((int)c+val > 126)
             {
-                eMsg += (char)(33+distUpperLim);
+                eMsg += (char)(33 +  whereTo);
             }
             else if ((int)c+val < 33)
             {
-                eMsg += (126 - distLowerLim);
+                eMsg += (char)(126 - whereTo);
             }
             else
             {
@@ -63,26 +75,25 @@ string encrypt(string s, string key)
 
 string decrypt(string s, string key)
 {
-    int val = -magicNum(key);
-    key.append(vowels); 
+    int val = magicNum(key); 
     string dMsg = "";
     for (char c : s)
-    {
-        int distUpperLim = 126 - (int)(c);
-        int distLowerLim = (int)(c) - 33;
-        int ch = (int)(c);
-        int cVal = (int)(c) + val; 
-        if (cVal > 126)
+    {   
+        int whereTo = whereToMod((int)c, val);
+        if (!isVowel(c) && !(isVowel((char)(whereTo))))
         {
-            cVal = 33 + distUpperLim;
-        }
-        if (cVal < 33)
-        {
-            cVal = 126 - distLowerLim;
-        }
-        if (isInKey((char)cVal, key))
-        {
-            dMsg += (char)cVal; 
+            if ((int)c+val > 126)
+            {
+                dMsg += (char)(33 + whereTo);
+            }
+            else if ((int)c+val < 33)
+            {
+                dMsg += (33 - whereTo);
+            }
+            else
+            {
+                dMsg += (char)((int)c+val);
+            }
         }
         else
         {
@@ -100,9 +111,12 @@ int main()
     b.append(vowels);
     cout << b;*/ 
     //cout << magicNum("abc");
-    string a = encrypt("christian nguyen", "ngc");
-    cout << "encrypted: " << a << "\n";  
-    string b = decrypt("thrzstzr1 1x*yv1", "ngc");
-    cout << "decrypted: " << b; 
+    /*string a = "plz work :)";
+    cout << "plaintext: " << a << "\n"; 
+    cout << "encrypt: " << encrypt(a, "gg") << "\n";
+    string b = "PlRwRoPkwB|";
+    cout << "decrypt: " << decrypt(b,"gg") << "\n";
+    //cout << magicNum("this is the key");*/
+    cout << magicNum("hoWdy");
     return 0;
 }
