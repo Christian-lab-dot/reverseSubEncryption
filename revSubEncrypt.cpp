@@ -14,6 +14,7 @@ string encrypt(string s, int key)
     {
         key = key % 26; 
     }
+    key = key * -1;
     for (char c : s)
     {
         if (isalpha(c))
