@@ -156,25 +156,32 @@ int main()
     int c;
     string str;
     int key;
-    cout << "what do you want to do?\n" << "1:encrypt\n" << "2:decrypt\n";
-    cin >> c;
-    cin.ignore();
-    if (c == 1)
+    char choice = 'y';
+    while (choice == 'y' || choice == 'Y')
     {
-        cout << "message to be encrypted: ";
-        getline(cin, str);
-        cout << "key (numeric value): ";
-        cin >> key;
-        cout << encrypt(str, key); 
+        cout << "what do you want to do?\n" << "1:encrypt\n" << "2:decrypt\n";
+        cin >> c;
+        cin.ignore();
+        if (c == 1)
+        {
+            cout << "message to be encrypted: ";
+            getline(cin, str);
+            cout << "key (numeric value): ";
+            cin >> key;
+            cout << encrypt(str, key) << "\n"; 
+        }
+        if (c == 2)
+        {
+            cout << "message to be decrypted: ";
+            getline(cin, str);
+            cout << "key (numeric value): ";
+            cin >> key;
+            cout << decrypt(str, key) << "\n";
+        }
+        cout << "would you like to continue (y or n)\n";
+        cin >> choice;
     }
-    if (c == 2)
-    {
-        cout << "message to be decrypted: ";
-        getline(cin, str);
-        cout << "key (numeric value): ";
-        cin >> key;
-        cout << decrypt(str, key);
-    }
+    
     return 0;
 }
 
